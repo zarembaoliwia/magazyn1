@@ -1,39 +1,58 @@
-# Prosty magazyn – Python
+# Prosty magazyn – towary z ilościami
 
-magazyn = [
-    "komputer",
-    "drabina",
-    "pralka",
-    "młotek",
-    "drukarka",
-    "pralka"
-]
+magazyn = {
+    "komputer": 5,
+    "drabina": 2,
+    "pralka": 3,
+    "młotek": 10,
+    "drukarka": 1
+}
 
 def wyswietl():
-    print("\n📦 Aktualny stan magazynu:")
-    for towar in magazyn:
-        print("-", towar)
+    print("\n📦 Stan magazynu:")
+    for towar, ilosc in magazyn.items():
+        print(f"- {towar}: {ilosc} szt.")
 
 def dodaj():
-    towar = input("Podaj nazwę towaru do dodania: ")
-    if towar:
-        magazyn.append(towar)
-        print("✅ Dodano:", towar)
+    towar = input("Podaj nazwę towaru: ")
+    try:
+        ilosc = int(input("Podaj ilość: "))
+    except ValueError:
+        print("❌ Ilość musi być liczbą")
+        return
+
+    if towar in magazyn:
+        magazyn[towar] += ilosc
     else:
-        print("❌ Nie podano nazwy")
+        magazyn[towar] = ilosc
+
+    print(f"✅ Dodano {ilosc} szt. towaru '{towar}'")
 
 def usun():
-    towar = input("Podaj nazwę towaru do usunięcia: ")
-    if towar in magazyn:
-        magazyn.remove(towar)
-        print("🗑 Usunięto:", towar)
-    else:
+    towar = input("Podaj nazwę towaru: ")
+    if towar not in magazyn:
         print("❌ Towaru nie ma")
+        return
+
+    try:
+        ilosc = int(input("Podaj ilość do usunięcia: "))
+    except ValueError:
+        print("❌ Ilość musi być liczbą")
+        return
+
+    if ilosc >= magazyn[towar]:
+        del magazyn[towar]
+        print(f"🗑 Usunięto cały towar '{towar}'")
+    else:
+        magazyn[towar] -= ilosc
+        print(f"➖ Usunięto {ilosc} szt. towaru '{towar}'")
 
 def sprawdz():
-    towar = input("Podaj nazwę towaru do sprawdzenia: ")
-    ilosc = magazyn.count(towar)
-    print(f"🔍 Towar '{towar}' występuje {ilosc} razy")
+    towar = input("Podaj nazwę towaru: ")
+    if towar in magazyn:
+        print(f"🔍 {towar}: {magazyn[towar]} szt.")
+    else:
+        print("❌ Towaru nie ma")
 
 def menu():
     while True:
